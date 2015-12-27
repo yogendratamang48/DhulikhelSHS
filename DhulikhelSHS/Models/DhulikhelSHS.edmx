@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DhulikhelDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="WardBhela">
+          <Key>
+            <PropertyRef Name="WardBhelaID" />
+          </Key>
+          <Property Name="WardBhelaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WardBhelaDate" Type="date" />
+          <Property Name="WardNumber" Type="nchar" MaxLength="10" />
+          <Property Name="PresentMale" Type="int" />
+          <Property Name="PresentFemale" Type="int" />
+          <Property Name="PresentBoy" Type="int" />
+          <Property Name="PresentGirl" Type="int" />
+        </EntityType>
+        <EntityType Name="WBCategory">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="250" />
+          <Property Name="CategoryDesc" Type="nchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="WBPlan">
+          <Key>
+            <PropertyRef Name="WBPlanID" />
+          </Key>
+          <Property Name="WBPlanID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WBPlanName" Type="nvarchar" MaxLength="200" />
+          <Property Name="WBPlanDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="WBCategoryID" Type="int" />
+          <Property Name="WBID" Type="int" />
+        </EntityType>
+        <Association Name="FK_WBPlan_WardBhela">
+          <End Role="WardBhela" Type="Self.WardBhela" Multiplicity="0..1" />
+          <End Role="WBPlan" Type="Self.WBPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WardBhela">
+              <PropertyRef Name="WardBhelaID" />
+            </Principal>
+            <Dependent Role="WBPlan">
+              <PropertyRef Name="WBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WBPlan_WBCategory">
+          <End Role="WBCategory" Type="Self.WBCategory" Multiplicity="0..1" />
+          <End Role="WBPlan" Type="Self.WBPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WBCategory">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="WBPlan">
+              <PropertyRef Name="WBCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DhulikhelDBModelStoreContainer">
+          <EntitySet Name="WardBhela" EntityType="Self.WardBhela" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WBCategory" EntityType="Self.WBCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WBPlan" EntityType="Self.WBPlan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_WBPlan_WardBhela" Association="Self.FK_WBPlan_WardBhela">
+            <End Role="WardBhela" EntitySet="WardBhela" />
+            <End Role="WBPlan" EntitySet="WBPlan" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WBPlan_WBCategory" Association="Self.FK_WBPlan_WBCategory">
+            <End Role="WBCategory" EntitySet="WBCategory" />
+            <End Role="WBPlan" EntitySet="WBPlan" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DhulikhelDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="WardBhela">
+          <Key>
+            <PropertyRef Name="WardBhelaID" />
+          </Key>
+          <Property Name="WardBhelaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WardBhelaDate" Type="DateTime" Precision="0" />
+          <Property Name="WardNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PresentMale" Type="Int32" />
+          <Property Name="PresentFemale" Type="Int32" />
+          <Property Name="PresentBoy" Type="Int32" />
+          <Property Name="PresentGirl" Type="Int32" />
+          <NavigationProperty Name="WBPlans" Relationship="Self.FK_WBPlan_WardBhela" FromRole="WardBhela" ToRole="WBPlan" />
+        </EntityType>
+        <EntityType Name="WBCategory">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryDesc" Type="String" MaxLength="250" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="WBPlans" Relationship="Self.FK_WBPlan_WBCategory" FromRole="WBCategory" ToRole="WBPlan" />
+        </EntityType>
+        <EntityType Name="WBPlan">
+          <Key>
+            <PropertyRef Name="WBPlanID" />
+          </Key>
+          <Property Name="WBPlanID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WBPlanName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="WBPlanDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="WBCategoryID" Type="Int32" />
+          <Property Name="WBID" Type="Int32" />
+          <NavigationProperty Name="WardBhela" Relationship="Self.FK_WBPlan_WardBhela" FromRole="WBPlan" ToRole="WardBhela" />
+          <NavigationProperty Name="WBCategory" Relationship="Self.FK_WBPlan_WBCategory" FromRole="WBPlan" ToRole="WBCategory" />
+        </EntityType>
+        <Association Name="FK_WBPlan_WardBhela">
+          <End Role="WardBhela" Type="Self.WardBhela" Multiplicity="0..1" />
+          <End Role="WBPlan" Type="Self.WBPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WardBhela">
+              <PropertyRef Name="WardBhelaID" />
+            </Principal>
+            <Dependent Role="WBPlan">
+              <PropertyRef Name="WBID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WBPlan_WBCategory">
+          <End Role="WBCategory" Type="Self.WBCategory" Multiplicity="0..1" />
+          <End Role="WBPlan" Type="Self.WBPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WBCategory">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="WBPlan">
+              <PropertyRef Name="WBCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DhulikhelDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="WardBhelas" EntityType="Self.WardBhela" />
+          <EntitySet Name="WBCategories" EntityType="Self.WBCategory" />
+          <EntitySet Name="WBPlans" EntityType="Self.WBPlan" />
+          <AssociationSet Name="FK_WBPlan_WardBhela" Association="Self.FK_WBPlan_WardBhela">
+            <End Role="WardBhela" EntitySet="WardBhelas" />
+            <End Role="WBPlan" EntitySet="WBPlans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WBPlan_WBCategory" Association="Self.FK_WBPlan_WBCategory">
+            <End Role="WBCategory" EntitySet="WBCategories" />
+            <End Role="WBPlan" EntitySet="WBPlans" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DhulikhelDBModelStoreContainer" CdmEntityContainer="DhulikhelDBEntities">
+          <EntitySetMapping Name="WardBhelas">
+            <EntityTypeMapping TypeName="DhulikhelDBModel.WardBhela">
+              <MappingFragment StoreEntitySet="WardBhela">
+                <ScalarProperty Name="WardBhelaID" ColumnName="WardBhelaID" />
+                <ScalarProperty Name="WardBhelaDate" ColumnName="WardBhelaDate" />
+                <ScalarProperty Name="WardNumber" ColumnName="WardNumber" />
+                <ScalarProperty Name="PresentMale" ColumnName="PresentMale" />
+                <ScalarProperty Name="PresentFemale" ColumnName="PresentFemale" />
+                <ScalarProperty Name="PresentBoy" ColumnName="PresentBoy" />
+                <ScalarProperty Name="PresentGirl" ColumnName="PresentGirl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WBCategories">
+            <EntityTypeMapping TypeName="DhulikhelDBModel.WBCategory">
+              <MappingFragment StoreEntitySet="WBCategory">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryDesc" ColumnName="CategoryDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WBPlans">
+            <EntityTypeMapping TypeName="DhulikhelDBModel.WBPlan">
+              <MappingFragment StoreEntitySet="WBPlan">
+                <ScalarProperty Name="WBPlanID" ColumnName="WBPlanID" />
+                <ScalarProperty Name="WBPlanName" ColumnName="WBPlanName" />
+                <ScalarProperty Name="WBPlanDesc" ColumnName="WBPlanDesc" />
+                <ScalarProperty Name="WBCategoryID" ColumnName="WBCategoryID" />
+                <ScalarProperty Name="WBID" ColumnName="WBID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
